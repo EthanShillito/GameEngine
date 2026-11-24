@@ -1,1 +1,4 @@
 # GameEngine
+Dependencies:
+- GLFW
+- glad
