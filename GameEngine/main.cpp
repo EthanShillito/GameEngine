@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 
+#include "Renderer.h"
+
 //callbacks
 
 //temp helper functions
@@ -45,9 +47,14 @@ int main() {
 		return -1;
 	}
 
+	//render setup
+	setupRender();
+
 	//Loop
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
+
+		renderIteraton();
 
 		glfwPollEvents();
 	}

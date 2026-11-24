@@ -2,3 +2,4 @@
 Dependencies:
 - GLFW
 - glad
+- GLM
