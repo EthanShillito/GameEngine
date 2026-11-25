@@ -31,7 +31,7 @@ int main() {
 	//GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Engine", glfwGetPrimaryMonitor(), NULL);
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Engine", NULL, NULL);
 	if (window == NULL) {
-		std::cout << "ERROR::Failed_To_Create_GLFWwindow" << std::endl;
+		std::cerr << "ERROR::Failed_To_Create_GLFWwindow" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
@@ -42,7 +42,7 @@ int main() {
 	
 	//intialise glad
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-		std::cout << "ERROR::Failed_To_Initalise_Glad" << std::endl;
+		std::cerr << "ERROR::Failed_To_Initalise_Glad" << std::endl;
 		glfwTerminate();
 		return -1;
 	}

@@ -9,9 +9,11 @@
 
 class Shader
 {
+public:
 	Shader(const char* vertexPath, const char* fragmentPath);
 	void Use();
 	void setBool(const std::string& name, bool value);
+	void setInt(const std::string& name, int value);
 	void setVec2(const std::string& name, glm::vec2 value);
 	void setVec2(const std::string &name, float x, float y);
 	void setVec3(const std::string& name, glm::vec3 value);
