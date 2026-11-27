@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+#include<iostream>
+
 //Constructor
 Mesh::Mesh(std::vector<Vertex> verticies, std::vector<unsigned int> indicies, std::vector<Texture> textures) {
 	this->vertices = verticies;
@@ -63,8 +65,8 @@ void Mesh::Draw(Shader& shader) {
 				break;
 		}
 
-		shader.setInt(("material." + typeName + number).c_str(), i);
-		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		shader.setInt((typeName + number), i);
+		glBindTexture(GL_TEXTURE_2D, textures[i].id);//not sure why this isn't working
 	}
 	glActiveTexture(GL_TEXTURE0);
 

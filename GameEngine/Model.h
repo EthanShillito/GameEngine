@@ -1,6 +1,7 @@
 #ifndef model_h
 #define model_h
-#include "Mesh.h";
+#include "Mesh.h"
+#include "utils.h"
 
 #include <iostream>
 
@@ -14,17 +15,17 @@ private:
 	std::vector<Mesh> meshes;
 	std::vector<Texture> loadedtextures;
 
-	const char* textureDirectory;
+	std::string textureDirectory;
 
 public:
-	Model(const char* path);
+	Model(std::string path);
 
-	Model(const char* modelPath, const char* texturePath);
+	Model(std::string modelPath, std::string texturePath);
 
 	void Draw(Shader& shader);
 
 private:
-	void loadModel(const char* path);
+	void loadModel(std::string path);
 
 	void processNode(aiNode* node, const aiScene* scene);
 

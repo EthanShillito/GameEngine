@@ -4,9 +4,12 @@
 #include <iostream>
 #include <string>
 
-#include "Renderer.h"
+#define STB_IMAGE_IMPLEMENTATION
+
+#include "Model.h"
 
 //callbacks
+void frameBufferSizeCallback(GLFWwindow* window, int width, int height);
 
 //temp helper functions
 void processInput(GLFWwindow* window);
@@ -14,6 +17,7 @@ void processInput(GLFWwindow* window);
 //window settings
 unsigned int SCR_WIDTH;
 unsigned int SCR_HEIGHT;
+bool fullscreen = false;
 
 int main() {
 	//glfw intialise
@@ -28,8 +32,13 @@ int main() {
 	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 	SCR_WIDTH = mode->width;
 	SCR_HEIGHT = mode->height;
-	//GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Engine", glfwGetPrimaryMonitor(), NULL);
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Engine", NULL, NULL);
+	GLFWwindow* window;
+	if (fullscreen) {
+		window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Engine", glfwGetPrimaryMonitor(), NULL);
+	}
+	else {
+		window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Engine", NULL, NULL);
+	}
 	if (window == NULL) {
 		std::cerr << "ERROR::Failed_To_Create_GLFWwindow" << std::endl;
 		glfwTerminate();
@@ -38,6 +47,7 @@ int main() {
 	glfwMakeContextCurrent(window);
 	
 	//set callbacks
+	glfwSetFramebufferSizeCallback(window, frameBufferSizeCallback);
 
 	
 	//intialise glad
@@ -48,14 +58,37 @@ int main() {
 	}
 
 	//render setup
-	setupRender();
+	glEnable(GL_DEPTH_TEST);
+
+	//testing
+	Shader defaultShader = Shader("Shaders/DefaultShader.vs", "Shaders/DefaultShader.fs");
+
+	std::vector<Model> models;
+	models.push_back(Model("Meshes/Box/box.obj"));
 
 	//Loop
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
 
-		renderIteraton();
+		glClearColor(0.51f, 0.81f, 0.88f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		defaultShader.Use();
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		glm::mat4 view = glm::lookAt(glm::vec3(3.0f,3.0f,9.0f), glm::vec3(3.0f, 3.0f, 9.0f) + glm::vec3(-0.5f, -0.5f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+		glm::mat4 model = glm::mat4(1.0f);
+		glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+		defaultShader.setMat4("model", model);
+		defaultShader.setMat4("view", view);
+		defaultShader.setMat4("projection", projection);
+
+		for (int i = 0; i < models.size(); i++) {
+			models[i].Draw(defaultShader);
+		}
+
+		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
@@ -65,6 +98,13 @@ int main() {
 
 void processInput(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
+	}
+}
+
+void frameBufferSizeCallback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
+	SCR_WIDTH = width;
+	SCR_HEIGHT = height;
 }

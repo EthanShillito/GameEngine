@@ -1,16 +1,15 @@
 #include "Model.h"
 
 //constructor
-Model::Model(const char* path) {
+Model::Model(std::string path) {
 	//if not specified assume in same folder as model
-	std::string strPath = std::string(path);
-	textureDirectory = strPath.substr(0, strPath.find_last_of('/')).c_str();
+	textureDirectory = path.substr(0, path.find_last_of('/')).c_str();
 
 	loadModel(path);
 }
 
 //constructor with speicifed location for textures
-Model::Model(const char* modelPath, const char* texturePath) {
+Model::Model(std::string modelPath, std::string texturePath) {
 	textureDirectory = texturePath;
 
 	loadModel(modelPath);
@@ -26,7 +25,7 @@ void Model::Draw(Shader& shader) {
 }
 
 //load the model from file
-void Model::loadModel(const char* path) {
+void Model::loadModel(std::string path) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
@@ -123,7 +122,8 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial* material, aiTexture
 
 		if (!loaded) {
 			Texture texture;
-			texture.id = loadTexture(textureDirectory + '/' + *path.C_Str());
+			std::string test = path.C_Str();
+			texture.id = Util::loadTexture((textureDirectory + '/' + path.C_Str()).c_str());
 			switch (type) {
 				case aiTextureType_DIFFUSE:
 					texture.type = TextureType::Diffuse;

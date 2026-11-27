@@ -3,7 +3,6 @@
 
 #include "Shader.h"
 #include <vector>
-#include "utils.h"
 
 struct Vertex {
 	glm::vec3 Position;
