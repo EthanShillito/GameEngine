@@ -8,6 +8,7 @@
 
 #include "Model.h"
 #include "Camera.h"
+#include "GameObject.h"
 
 //callbacks
 void frameBufferSizeCallback(GLFWwindow* window, int width, int height);
@@ -67,7 +68,12 @@ int main() {
 	std::vector<Model> models;
 	models.push_back(Model("Meshes/Box/box.obj"));
 
-	Camera camera = Camera(Transform(glm::vec3(-7.0f, 3.0f, 3.0f), glm::vec3(0.0f, -25.0f, -20.0f)));
+	Transform startTransform = Transform(glm::vec3(-7.0f, 3.0f, 3.0f), glm::vec3(0.0f, -25.0f, -20.0f));
+	//Camera camera = Camera(Transform(glm::vec3(-7.0f, 3.0f, 3.0f), glm::vec3(0.0f, -25.0f, -20.0f)));
+	Camera camera = Camera();
+	std::vector<Component*> components = std::vector<Component*>();
+	components.push_back(&camera);
+	GameObject player = GameObject(startTransform, components);
 
 	//Loop
 	while (!glfwWindowShouldClose(window)) {

@@ -18,7 +18,7 @@ struct Transform
 	}
 
 	Transform operator +(const Transform& other) {
-		return Transform(this->position + other.position, this->rotation + other.rotation, this->scale + other.scale); //I think actually needs to be matrix multiplication but works for now
+		return Transform(this->position + other.position, this->rotation + other.rotation, this->scale * other.scale); //I think actually needs to be matrix multiplication but works for now
 	}
 
 	void operator +=(const Transform& other) {
