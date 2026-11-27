@@ -66,7 +66,7 @@ void Mesh::Draw(Shader& shader) {
 		}
 
 		shader.setInt((typeName + number), i);
-		glBindTexture(GL_TEXTURE_2D, textures[i].id);//not sure why this isn't working
+		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
 	glActiveTexture(GL_TEXTURE0);
 

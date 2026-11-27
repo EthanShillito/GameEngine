@@ -7,6 +7,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "Model.h"
+#include "Camera.h"
 
 //callbacks
 void frameBufferSizeCallback(GLFWwindow* window, int width, int height);
@@ -66,6 +67,8 @@ int main() {
 	std::vector<Model> models;
 	models.push_back(Model("Meshes/Box/box.obj"));
 
+	Camera camera = Camera(Transform(glm::vec3(-7.0f, 3.0f, 3.0f), glm::vec3(0.0f, -25.0f, -20.0f)));
+
 	//Loop
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
@@ -74,8 +77,8 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		defaultShader.Use();
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		glm::mat4 view = glm::lookAt(glm::vec3(3.0f,3.0f,9.0f), glm::vec3(3.0f, 3.0f, 9.0f) + glm::vec3(-0.5f, -0.5f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 projection = camera.GetPerspectiveMatrix(SCR_WIDTH / (float)SCR_HEIGHT);
+		glm::mat4 view = camera.GetViewMatrix();
 
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
